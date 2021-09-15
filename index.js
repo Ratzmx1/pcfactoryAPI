@@ -8,7 +8,7 @@ app.use(express.json());
 
 app.get("/diff", async (req, res) => {
   const diff = await fetchData();
-  return res.json(diff);
+  return res.json({ data: diff });
 });
 
 app.listen(PORT, () => {
