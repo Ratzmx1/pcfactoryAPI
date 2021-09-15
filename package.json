@@ -1,0 +1,17 @@
+{
+  "name": "test1",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "serve": "nodemon index.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1",
+    "lodash": "^4.17.21",
+    "nodemon": "^2.0.12",
+    "puppeteer": "^10.2.0"
+  }
+}
