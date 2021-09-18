@@ -3,7 +3,13 @@ const fs = require("fs");
 const _ = require("lodash");
 
 var browser;
-puppeteer.launch().then((b) => (browser = b));
+// puppeteer.launch().then((b) => (browser = b));
+puppeteer
+  .launch({
+    executablePath: "/usr/bin/chromium-browser",
+    args: ["--no-sandbox"],
+  })
+  .then((b) => (browser = b));
 
 const fetchData = async () => {
   const page = await browser.newPage();
