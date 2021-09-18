@@ -2,12 +2,13 @@ const puppeteer = require("puppeteer");
 const fs = require("fs");
 const _ = require("lodash");
 
+var browser;
+puppeteer.launch().then((b) => (browser = b));
+
 const fetchData = async () => {
-  const browser = await puppeteer.launch();
   const page = await browser.newPage();
 
   const data = {};
-  const diff = {};
 
   try {
     await page.goto("https://www.pcfactory.cl/liquidacion", {
@@ -85,7 +86,7 @@ const fetchData = async () => {
   }
 
   await page.close();
-  await browser.close();
+  // await browser.close();
   return diffList;
 };
 

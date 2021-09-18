@@ -1,15 +1,17 @@
 const express = require("express");
-const fetchData = require("./fetchDiff");
+const getCategories = require("./src/controllers/getCategories");
+const getCategory = require("./src/controllers/getCategory");
+
+const getDiff = require("./src/controllers/getDiff");
 
 const app = express();
 const PORT = 5005;
 
 app.use(express.json());
 
-app.get("/diff", async (req, res) => {
-  const diff = await fetchData();
-  return res.json({ data: diff });
-});
+app.get("/diff", getDiff);
+app.get("/categories", getCategories);
+app.get("/categories/:key", getCategory);
 
 app.listen(PORT, () => {
   console.log(`Listen on port ${PORT}`);
