@@ -4,15 +4,15 @@ const _ = require("lodash");
 
 var browser;
 // puppeteer.launch().then((b) => (browser = b)); // dev
-// puppeteer  // prod
-//   .launch({
-//     executablePath: "/usr/bin/chromium-browser",
-//     args: ["--no-sandbox"],
-//   })
-//   .then((b) => (browser = b));
+puppeteer // prod
+  .launch({
+    executablePath: "/usr/bin/chromium-browser",
+    args: ["--no-sandbox"],
+  })
+  .then((b) => (browser = b));
 
 const fetchData = async () => {
-  const browser = await puppeteer.launch();
+  // const browser = await puppeteer.launch();
   const page = await browser.newPage();
 
   const data = {};
@@ -110,7 +110,7 @@ const fetchData = async () => {
   }
 
   await page.close();
-  await browser.close();
+  // await browser.close();
   return diffList;
 };
 
