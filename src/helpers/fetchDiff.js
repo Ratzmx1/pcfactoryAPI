@@ -43,7 +43,7 @@ const fetchData = async () => {
       const el = [];
       for (let page = 0; page < Math.ceil(cantidadProductos / 48); page++) {
         await newpage.goto(
-          `https://www.pcfactory.cl${element}?pagina=${page + 1}`,
+          `https://www.pcfactory.cl${element}?pagina=${page + 1}&orden=2`,
           {
             waitUntil: "domcontentloaded",
           }
