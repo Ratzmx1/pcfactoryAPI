@@ -2,19 +2,22 @@ const puppeteer = require("puppeteer");
 const fs = require("fs");
 const _ = require("lodash");
 
-var browser;
-// puppeteer.launch().then((b) => (browser = b)); // dev
+var page;
+
+// puppeteer
+//   .launch()
+//   .then((b) => b.newPage())
+//   .then((p) => (page = p)); // dev
+
 puppeteer // prod
   .launch({
     executablePath: "/usr/bin/chromium-browser",
     args: ["--no-sandbox"],
   })
-  .then((b) => (browser = b));
+  .then((b) => b.newPage())
+  .then((p) => (page = p)); // prod
 
 const fetchData = async () => {
-  // const browser = await puppeteer.launch();
-  const page = await browser.newPage();
-
   const data = {};
 
   try {
@@ -31,7 +34,6 @@ const fetchData = async () => {
     for (const id in dataIdList) {
       // console.log(id, dataIdList[id]);
       const element = dataIdList[id];
-      const newpage = await browser.newPage();
       const cantidadProductos = await page.$eval(
         `div[data-id="${element}"] div.product-filters__heading h4.link.color-primary-1 span:nth-child(2)`,
         (e) => {
@@ -41,29 +43,33 @@ const fetchData = async () => {
 
       console.log(element, cantidadProductos);
       const el = [];
-      for (let page = 0; page < Math.ceil(cantidadProductos / 48); page++) {
-        await newpage.goto(
-          `https://www.pcfactory.cl${element}?pagina=${page + 1}&orden=2`,
+      for (
+        let pageIndex = 1;
+        pageIndex < Math.ceil(cantidadProductos / 48) + 1;
+        pageIndex++
+      ) {
+        await page.goto(
+          `https://www.pcfactory.cl${element}?pagina=${pageIndex}&orden=2`,
           {
             waitUntil: "domcontentloaded",
           }
         );
 
-        const productList = await newpage.$$eval(
+        const productList = await page.$$eval(
           `div[data-id="${element}"] .product .product__card-title`,
           (data) => {
             return data.map((e) => e.textContent);
           }
         );
 
-        const priceList = await newpage.$$eval(
+        const priceList = await page.$$eval(
           `div[data-id="${element}"] .product div.product__price div .title-md`,
           (data) => {
             return data.map((e) => e.textContent);
           }
         );
 
-        const imageList = await newpage.$$eval(
+        const imageList = await page.$$eval(
           `div[data-id="${element}"] .product div.product__image img`,
           (data) => {
             return data.map(
@@ -72,7 +78,7 @@ const fetchData = async () => {
           }
         );
 
-        const urlList = await newpage.$$eval(
+        const urlList = await page.$$eval(
           `div[data-id="${element}"] .product div.product__image a`,
           (data) => {
             return data.map(
@@ -90,7 +96,6 @@ const fetchData = async () => {
         }
       }
       data[element.replace("/liq-", "").toUpperCase()] = el;
-      newpage.close();
     }
     const db = JSON.parse(fs.readFileSync("db.json", "utf-8"));
     var diffList = [];
@@ -109,7 +114,7 @@ const fetchData = async () => {
     console.log(`Internal Error ${error.message}`);
   }
 
-  await page.close();
+  // await page.close();
   // await browser.close();
   return diffList;
 };
