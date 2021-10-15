@@ -22,25 +22,22 @@ const fetchData = async () => {
     const datass = JSON.stringify(dataS[0]);
 
     const data = JSON.parse(
-      JSON.stringify(
-        _.replace(datass, new RegExp("'", "g"), '"').substring(
-          1,
-          datass.length - 3
-        )
-      )
+      _.replace(datass.toString("utf-8"), new RegExp("'", "g"), '"')
+        .substring(1, datass.length - 3)
+        .toString("utf-8")
     );
+
     const db = JSON.parse(fs.readFileSync("db.json", "utf-8"));
     var diffList = [];
-
     for (const j in Object.keys(data)) {
       const key = Object.keys(data)[j];
+
       const thisDiff = _.differenceBy(data[key], db[key], "name");
 
       if (thisDiff.length > 0) {
         diffList = _.concat(diffList, thisDiff);
       }
     }
-
     fs.writeFileSync("db.json", JSON.stringify(data), "utf-8");
   } catch (error) {
     console.log(`Internal Error ${error.message}`);
