@@ -47,11 +47,4 @@ const fetchData = async () => {
   return diffList;
 };
 
-const a = async () => {
-  const data = await fetchData();
-  console.log(data);
-};
-
-a();
-
-// module.exports = fetchData;
+module.exports = fetchData;
