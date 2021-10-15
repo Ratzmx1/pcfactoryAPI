@@ -21,17 +21,12 @@ const fetchData = async () => {
     const dataS = await getData();
     const datass = JSON.stringify(dataS[0]);
 
-    console.log(
-      _.replace(datass, new RegExp("'", "g"), '"').substring(
-        1,
-        datass.length - 3
-      )
-    );
-
     const data = JSON.parse(
-      _.replace(datass, new RegExp("'", "g"), '"').substring(
-        1,
-        datass.length - 3
+      JSON.stringify(
+        _.replace(datass, new RegExp("'", "g"), '"').substring(
+          1,
+          datass.length - 3
+        )
       )
     );
     const db = JSON.parse(fs.readFileSync("db.json", "utf-8"));
