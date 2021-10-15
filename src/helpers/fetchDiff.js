@@ -4,7 +4,7 @@ const _ = require("lodash");
 
 function getData() {
   return new Promise((resolve, reject) => {
-    const process = spawn("python", ["./src/helpers/scrapp.py"]);
+    const process = spawn("python3", ["./src/helpers/scrapp.py"]);
     const out = [];
     process.stdout.on("data", (data) => {
       out.push(data.toString());
