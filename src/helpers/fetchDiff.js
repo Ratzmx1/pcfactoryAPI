@@ -21,6 +21,13 @@ const fetchData = async () => {
     const dataS = await getData();
     const datass = JSON.stringify(dataS[0]);
 
+    console.log(
+      _.replace(datass, new RegExp("'", "g"), '"').substring(
+        1,
+        datass.length - 3
+      )
+    );
+
     const data = JSON.parse(
       _.replace(datass, new RegExp("'", "g"), '"').substring(
         1,
