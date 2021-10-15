@@ -19,14 +19,14 @@ function getData() {
 const fetchData = async () => {
   try {
     const dataS = await getData();
-    const datass = JSON.stringify(dataS[0]);
+    const datass = JSON.stringify(dataS[0]).toString("utf8");
 
     const data = JSON.parse(
-      _.replace(datass.toString("utf-8"), new RegExp("'", "g"), '"')
+      _.replace(datass.toString("utf8"), new RegExp("'", "g"), '"')
         .substring(1, datass.length - 3)
-        .toString("utf-8")
+        .toString("utf8")
     );
-
+    console.log(data);
     const db = JSON.parse(fs.readFileSync("db.json", "utf-8"));
     var diffList = [];
     for (const j in Object.keys(data)) {
